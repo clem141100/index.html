@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculateur Textile ALTICONCEPTION</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 0.6s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #34495e;
+    }
+    select, input[type="number"], input[type="text"], input[type="email"], input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+    .marquage-buttons button {
+      display: inline-block;
+      margin: 5px 5px 0 0;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #ecf0f1;
+      font-size: 0.95em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .marquage-buttons button.selected {
+      background-color: #2980b9;
+      color: white;
+      border-color: #1c5980;
+    }
+    button.calculate, button#download-pdf {
+      background-color: #2980b9;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1em;
+      width: 100%;
+      margin-top: 10px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    button.calculate:hover, button#download-pdf:hover {
+      background-color: #1c5980;
+      transform: scale(1.05);
+    }
+    .result {
+      font-size: 1.1em;
+      margin-top: 20px;
+      font-weight: 700;
+      color: #2c3e50;
+      background: #e8f8f5;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+      white-space: pre-line;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧵 Calculateur Textile ALTICONCEPTION</h1>
+  <div class="container">
+    <div class="form-group">
+      <label for="clientName">Nom du client</label>
+      <input type="text" id="clientName" placeholder="Entrez le nom du client" />
+    </div>
+    <div class="form-group">
+      <label for="clientEmail">Adresse mail (facultatif)</label>
+      <input type="email" id="clientEmail" placeholder="Entrez l'adresse mail" />
+    </div>
+    <div class="form-group">
+      <label for="clientPhone">Téléphone (facultatif)</label>
+      <input type="tel" id="clientPhone" placeholder="Entrez le numéro de téléphone" />
+    </div>
+    <div class="form-group">
+      <label for="article">Article</label>
+      <select id="article">
+        <option value="10.00" data-name="Sol's 140g">Sol's 140g</option>
+        <option value="11.50" data-name="Sol's 190g">Sol's 190g</option>
+        <option value="16.60" data-name="Polo léger">Polo léger</option>
+        <option value="15.00" data-name="Polo Sol's">Polo Sol's</option>
+        <option value="11.50" data-name="Sport monocouleur">Sport monocouleur</option>
+        <option value="12.75" data-name="Sport Bicolor">Sport Bicolor</option>
+        <option value="14.50" data-name="Oversize 140g">Oversize 140g</option>
+        <option value="16.00" data-name="Pull Manche longue">Pull Manche longue</option>
+        <option value="19.50" data-name="Sweat à capuche">Sweat à capuche</option>
+        <option value="15.20" data-name="Tablier de cuisine">Tablier de cuisine</option>
+        <option value="8.00" data-name="Casquette Standard">Casquette Standard</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Marquages</label>
+      <div class="marquage-buttons" id="marquage-buttons">
+        <button data-value="4.00" data-name="Cœur">Cœur</button>
+        <button data-value="4.00" data-name="Opposé au cœur">Opposé au cœur</button>
+        <button data-value="6.50" data-name="Centre torse">Centre torse</button>
+        <button data-value="4.50" data-name="Haut dos">Haut dos</button>
+        <button data-value="6.50" data-name="Centre dos">Centre dos</button>
+        <button data-value="4.00" data-name="Manche">Manche</button>
+        <button data-value="5.00" data-name="Manche longue">Manche longue</button>
+        <button data-value="5.00" data-name="Couvre chef">Couvre chef</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="quantite">Quantité d'articles</label>
+      <input type="number" id="quantite" value="1" min="1" />
+    </div>
+    <button class="calculate" onclick="calculerPrix()">🧮 Calculer le prix</button>
+    <div class="result" id="resultat"></div>
+    <button id="download-pdf" style="display:none;" onclick="telechargerPDF()">⬇️ Télécharger le devis PDF</button>
+  </div>
+
+  <!-- jsPDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    const { jsPDF } = window.jspdf;
+
+    const boutonsMarquage = document.querySelectorAll("#marquage-buttons button");
+    boutonsMarquage.forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.classList.toggle("selected");
+      });
+    });
+
+    let dernierDevis = null;
+
+    function genererNumeroDevis() {
+      const now = new Date();
+      return 'ALT-' + now.getFullYear() + '-' + now.getTime().toString().slice(-6);
+    }
+
+    function getRemiseQuantite(qte) {
+      if (qte >= 250) return 0.20;
+      if (qte >= 100) return 0.15;
+      if (qte >= 40) return 0.10;
+      if (qte >= 10) return 0.05;
+      if (qte >= 5) return 0.03;
+      return 0;
+    }
+
+    function getRemiseMarquages(n) {
+      switch(n) {
+        case 5: return 0.15;
+        case 4: return 0.13;
+        case 3: return 0.07;
+        case 2: return 0.03;
+        case 1: return 0;
+        default: return 0;
+      }
+    }
+
+    function calculerPrix() {
+      const clientName = document.getElementById("clientName").value.trim();
+      if (!clientName) {
+        alert("Merci d'entrer le nom du client.");
+        return;
+      }
+
+      const articleSelect = document.getElementById("article");
+      const articlePrixHT = parseFloat(articleSelect.value);
+      const articleNom = articleSelect.options[articleSelect.selectedIndex].dataset.name;
+
+      const quantite = parseInt(document.getElementById("quantite").value);
+      if (quantite < 1 || isNaN(quantite)) {
+        alert("La quantité doit être au moins 1.");
+        return;
+      }
+
+      const marquages = document.querySelectorAll("#marquage-buttons button.selected");
+      let totalMarquagesHT = 0;
+      let marquagesNoms = [];
+      marquages.forEach(m => {
+        totalMarquagesHT += parseFloat(m.dataset.value);
+        marquagesNoms.push(m.dataset.name);
+      });
+
+      const nombreMarquages = marquagesNoms.length;
+
+      const prixUnitaireSansRemise = articlePrixHT + totalMarquagesHT;
+
+      // Calcul remises cumulées
+      const remiseQuantite = getRemiseQuantite(quantite);
+      const remiseMarquages = getRemiseMarquages(nombreMarquages);
+
+      // Cumul des remises
+      const remiseTotale = remiseQuantite + remiseMarquages;
+
+      // Appliquer remise cumulée (par exemple 3% + 5% = 8%)
+      // Le prix unitaire avec remise
+      const prixUnitaireHT = prixUnitaireSansRemise * (1 - remiseTotale);
+
+      const TVA = 0.20;
+
+      const totalHT = prixUnitaireHT * quantite;
+      const totalTVA = totalHT * TVA;
+      const totalTTC = totalHT + totalTVA;
+
+      // Récupérer mail et téléphone (facultatifs)
+      const clientEmail = document.getElementById("clientEmail").value.trim();
+      const clientPhone = document.getElementById("clientPhone").value.trim();
+
+      dernierDevis = {
+        clientName,
+        clientEmail,
+        clientPhone,
+        articleNom,
+        quantite,
+        marquagesNoms,
+        prixUnitaireHT,
+        totalHT,
+        TVA,
+        totalTVA,
+        totalTTC,
+        numeroDevis: genererNumeroDevis(),
+        dateDevis: new Date()
+      };
+
+      document.getElementById("resultat").innerHTML =
+        `Prix unitaire HT : <strong>${prixUnitaireHT.toFixed(2)} €</strong>\n` +
+        `Total HT (${quantite} article(s)) : <strong>${totalHT.toFixed(2)} €</strong>\n` +
+        `TVA (20%) : <strong>${totalTVA.toFixed(2)} €</strong>\n` +
+        `Total TTC : <strong>${totalTTC.toFixed(2)} €</strong>`;
+
+      document.getElementById("download-pdf").style.display = "block";
+    }
+
+    function telechargerPDF() {
+      if (!dernierDevis) {
+        alert("Veuillez d'abord calculer le prix.");
+        return;
+      }
+
+      const doc = new jsPDF();
+
+      const bleuAlticonception = "#2980b9";
+      const grisClair = "#f4f6f8";
+      const noir = "#2c3e50";
+
+      // En-tête avec fond bleu
+      doc.setFillColor(41, 128, 185);
+      doc.rect(0, 0, 210, 35, "F");
+
+      doc.setFontSize(26);
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.text("ALTICONCEPTION", 105, 22, null, null, "center");
+
+      // Infos devis & client
+      doc.setFontSize(12);
+      doc.setTextColor(noir);
+      doc.setFont("helvetica", "normal");
+      doc.text(`Devis n° : ${dernierDevis.numeroDevis}`, 15, 50);
+      doc.text(`Date : ${dernierDevis.dateDevis.toLocaleDateString("fr-FR")}`, 150, 50);
+      doc.text(`Client : ${dernierDevis.clientName}`, 15, 60);
+
+      if (dernierDevis.clientEmail) {
+        doc.text(`Email : ${dernierDevis.clientEmail}`, 15, 68);
+      }
+      if (dernierDevis.clientPhone) {
+        doc.text(`Téléphone : ${dernierDevis.clientPhone}`, 15, 76);
+      }
+
+      // Ligne séparatrice
+      let baseY = 80;
+      if (dernierDevis.clientPhone) {
+        baseY = 85;
+      } else if (dernierDevis.clientEmail) {
+        baseY = 82;
+      }
+      doc.setDrawColor(41, 128, 185);
+      doc.setLineWidth(0.8);
+      doc.line(15, baseY, 195, baseY);
+
+      // Détail de la commande (tableau)
+      doc.setFontSize(14);
+      doc.setTextColor(bleuAlticonception);
+      doc.setFont("helvetica", "bold");
+      doc.text("Détail de la commande", 15, baseY + 10);
+
+      const startY = baseY + 18;  // augmenté un peu pour espace
+      const rowHeight = 10;
+
+      // Entête tableau - colonnes espacées pour éviter chevauchement
+      doc.setFillColor(grisClair);
+      doc.rect(15, startY - 8, 180, rowHeight, "F");
+      doc.setTextColor(noir);
+      doc.setFont("helvetica", "bold");
+      doc.text("Article", 20, startY);
+      doc.text("Qté", 110, startY);
+      doc.text("Prix Unitaire HT (€)", 140, startY);
+      doc.text("Total HT (€)", 195, startY, null, null, "right");
+
+      // Ligne de données
+      doc.setFont("helvetica", "normal");
+      const articleText = dernierDevis.articleNom + (dernierDevis.marquagesNoms.length > 0 ? " + " + dernierDevis.marquagesNoms.join(", ") : "");
+      doc.text(articleText, 20, startY + rowHeight);
+      doc.text(String(dernierDevis.quantite), 110, startY + rowHeight);
+      doc.text(dernierDevis.prixUnitaireHT.toFixed(2), 170, startY + rowHeight, null, null, "right");
+      doc.text(dernierDevis.totalHT.toFixed(2), 195, startY + rowHeight, null, null, "right");
+
+      // Totaux
+      let currentY = startY + rowHeight + 15;
+      doc.setFont("helvetica", "bold");
+      doc.text(`TVA (20%) :`, 150, currentY);
+      doc.text(dernierDevis.totalTVA.toFixed(2), 195, currentY, null, null, "right");
+      currentY += 8;
+      doc.text(`Total TTC :`, 150, currentY);
+      doc.text(dernierDevis.totalTTC.toFixed(2), 195, currentY, null, null, "right");
+
+      // Pied de page ALTICONCEPTION
+      doc.setFontSize(10);
+      doc.setTextColor("gray");
+      doc.text("ALTICONCEPTION - www.alticonception.fr - contact@alticonception.fr", 105, 285, null, null, "center");
+
+      doc.save(`Devis_ALTICONCEPTION_${dernierDevis.numeroDevis}.pdf`);
+    }
+  </script>
+</body>
+</html>
