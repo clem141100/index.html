@@ -115,15 +115,18 @@
       <select id="article">
         <option value="10.00" data-name="Sol's 140g">Sol's 140g</option>
         <option value="11.50" data-name="Sol's 190g">Sol's 190g</option>
+	<option value="14.50" data-name="Oversize 240g">Oversize 240g</option>
         <option value="16.60" data-name="Polo léger">Polo léger</option>
-        <option value="15.00" data-name="Polo Sol's">Polo Sol's</option>
+	<option value="14.50" data-name="Polo Sol's 180">Polo Sol's 180</option>
+	<option value="15.00" data-name="Polo Sol's 210">Polo Sol's 210</option>
         <option value="11.50" data-name="Sport monocouleur">Sport monocouleur</option>
         <option value="12.75" data-name="Sport Bicolor">Sport Bicolor</option>
-        <option value="14.50" data-name="Oversize 140g">Oversize 140g</option>
         <option value="16.00" data-name="Pull Manche longue">Pull Manche longue</option>
-        <option value="19.50" data-name="Sweat à capuche">Sweat à capuche</option>
-        <option value="15.20" data-name="Tablier de cuisine">Tablier de cuisine</option>
+        <option value="19.50" data-name="Sweat à capuche sol's">Sweat à capuche sol's</option>
+	<option value="24.50" data-name="Sweat Zippé Sol's 260">Sweat Zippé Sol's 260</option>
         <option value="8.00" data-name="Casquette Standard">Casquette Standard</option>
+	<option value="10.00" data-name="Casquette grillage">Casquette grillage</option>
+	<option value="15.20" data-name="Tablier de cuisine">Tablier de cuisine</option>
       </select>
     </div>
     <div class="form-group">
@@ -136,7 +139,8 @@
         <button data-value="6.50" data-name="Centre dos">Centre dos</button>
         <button data-value="4.00" data-name="Manche">Manche</button>
         <button data-value="5.00" data-name="Manche longue">Manche longue</button>
-        <button data-value="5.00" data-name="Couvre chef">Couvre chef</button>
+        <button data-value="5.00" data-name="Couvre chef avant">Couvre chef avant</button>
+	<button data-value="5.00" data-name="Couvre chef latéral">Couvre chef latéral</button>
       </div>
     </div>
     <div class="form-group">
@@ -279,13 +283,13 @@
       doc.setFillColor(41, 128, 185);
       doc.rect(0, 0, 210, 35, "F");
 
-      doc.setFontSize(26);
+      doc.setFontSize(20);
       doc.setTextColor(255, 255, 255);
       doc.setFont("helvetica", "bold");
       doc.text("ALTICONCEPTION", 105, 22, null, null, "center");
 
       // Infos devis & client
-      doc.setFontSize(12);
+      doc.setFontSize(8);
       doc.setTextColor(noir);
       doc.setFont("helvetica", "normal");
       doc.text(`Devis n° : ${dernierDevis.numeroDevis}`, 15, 50);
@@ -311,7 +315,7 @@
       doc.line(15, baseY, 195, baseY);
 
       // Détail de la commande (tableau)
-      doc.setFontSize(14);
+      doc.setFontSize(9);
       doc.setTextColor(bleuAlticonception);
       doc.setFont("helvetica", "bold");
       doc.text("Détail de la commande", 15, baseY + 10);
